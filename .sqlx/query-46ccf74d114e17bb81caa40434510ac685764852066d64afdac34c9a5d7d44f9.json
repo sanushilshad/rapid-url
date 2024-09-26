@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT original_url FROM short_url WHERE short_url = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "original_url",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "46ccf74d114e17bb81caa40434510ac685764852066d64afdac34c9a5d7d44f9"
+}
