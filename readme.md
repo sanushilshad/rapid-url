@@ -47,7 +47,7 @@ cargo sqlx prepare
 ```
 
 ## ENVIRON VARIABLE 
-- Set the following environ variables in files called `env.sh`
+- Set the following environ variables in `env.sh`
 - `env.sh`:
 ```
 
