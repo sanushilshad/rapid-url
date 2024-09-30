@@ -47,7 +47,7 @@ cargo sqlx prepare
 ```
 
 ## ENVIRON VARIABLE 
-- Set the following environ variables in files called `env.sh`
+- Set the following environ variables in `env.sh`
 - `env.sh`:
 ```
 
@@ -62,13 +62,9 @@ export DATABASE__USERNAME="postgres"
 export DATABASE__ACQUIRE_TIMEOUT=5
 export DATABASE__MAX_CONNECTIONS=2000
 export DATABASE__MIN_CONNECTIONS=10
-
 export OTEL_SERVICE_NAME="rapid-url"
 export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="http://localhost:4317"
 
-
-## LOG VARIABLES
-export TEST_LOG=True
 
 ## SECRET VARIABLE
 export SECRET__JWT__SECRET=""
@@ -81,8 +77,6 @@ export APPLICATION__ACCOUNT_NAME=""
 export APPLICATION__PORT=8001
 export APPLICATION__HOST=0.0.0.0
 export APPLICATION__WORKERS=16
-
-
 
 ```
 
