@@ -1,3 +1,4 @@
+source env.sh
 PIDS=($(ps aux | grep "$USER" | grep "$APPLICATION__NAME" | awk '{print $2}'))
 
 if [ ${#PIDS[@]} -gt 0 ];then

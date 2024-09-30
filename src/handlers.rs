@@ -55,7 +55,7 @@ pub async fn create_short_url(
     path = "/{short_url}",
     tag = "Redirect short URL",
     responses(
-        (status=200, description= "Redirect short URL", body= HttpResponse),
+        (status=200, description= "Redirect short URL"),
     )
 )]
 #[tracing::instrument(name = "redirect_short_url", skip(pool))]

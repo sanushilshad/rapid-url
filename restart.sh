@@ -12,4 +12,4 @@ if [ ${#PIDS[@]} -gt 0 ];then
            PID_KILLED=1
         done
 fi
-"$directory/$executable_name"
+nohup "$directory/$executable_name" &
