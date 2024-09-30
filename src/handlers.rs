@@ -11,7 +11,7 @@ use crate::schemas::{CreateUrlRequest, CreateUrlResponseData, GenericResponse};
     post,
     path = "/shorten",
     tag = "Create short URL",
-    request_body(content = OrderConfirmRequest, description = "Request Body"),
+    request_body(content = CreateUrlRequest, description = "Request Body"),
     responses(
         (status=200, description= "Create short URL", body= CreateUrlResponse),
     ),
@@ -54,7 +54,6 @@ pub async fn create_short_url(
     post,
     path = "/{short_url}",
     tag = "Redirect short URL",
-    request_body(content = OrderConfirmRequest, description = "Request Body"),
     responses(
         (status=200, description= "Redirect short URL", body= HttpResponse),
     )
