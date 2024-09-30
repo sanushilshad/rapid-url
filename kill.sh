@@ -1,6 +1,7 @@
-PIDS=($(ps aux | grep 'lsyncd' | grep "$USER" | awk '{print $2}'))
-PID_KILLED=0
+PIDS=($(ps aux | grep "$USER" | grep "$APPLICATION__NAME" | awk '{print $2}'))
+
 if [ ${#PIDS[@]} -gt 0 ];then
+    echo "Running Ports are ${PIDS}"
     for i in "${PIDS[@]}"
         do
            echo "Killing process with PID - $i"
