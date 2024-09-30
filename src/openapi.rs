@@ -7,7 +7,7 @@ use crate::schemas::CreateUrlResponseData;
 #[derive(OpenApi)]
 #[openapi(
     tags(
-        (name = "ONDC Rapid URL REST API", description = "ONDC Rapid URLAPI Endpoints")
+        (name = "ONDC Rapid URL REST API", description = "ONDC Rapid URL API Endpoints")
     ),
 )]
 

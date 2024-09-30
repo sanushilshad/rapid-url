@@ -13,7 +13,7 @@ use actix_web::{ web, FromRequest, HttpRequest};
 use actix_http::Payload;
 
 #[allow(dead_code)]
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Serialize, ToSchema)]
 pub struct CreateUrlRequest {
     pub original_url: String,
     pub expiry_date: Option<DateTime<Utc>>,
