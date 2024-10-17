@@ -1,9 +1,9 @@
 use futures::future::LocalBoxFuture;
-use secrecy::{ ExposeSecret, Secret};
+use secrecy::{ ExposeSecret, SecretString};
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 use sqlx::ConnectOptions;
-use utoipa::{openapi::Object, ToSchema};
+use utoipa:: ToSchema;
 use sqlx::postgres::PgConnectOptions;
 use uuid::Uuid;
 
@@ -52,7 +52,7 @@ pub struct JWTClaims {
 
 
 #[derive(Serialize, Debug, ToSchema)]
-#[aliases(EmptyGenericResponse = GenericResponse<Object>,  CreateUrlResponse = GenericResponse<CreateUrlResponseData>)]
+// #[aliases(EmptyGenericResponse = GenericResponse<Object>,  CreateUrlResponse = GenericResponse<CreateUrlResponseData>)]
 pub struct GenericResponse<D> {
     pub status: bool,
     pub customer_message: String,
@@ -84,7 +84,7 @@ impl<D> GenericResponse<D> {
 #[derive(Debug, Deserialize, Clone)]
 pub struct DatabaseSettings {
     pub username: String,
-    pub password: Secret<String>,
+    pub password: SecretString,
     pub port: u16,
     pub host: String,
     pub name: String,
@@ -122,13 +122,14 @@ pub struct ApplicationSettings {
     pub port: u16,
     pub host: String,
     pub workers: usize,
+    pub domain: String
 }
 
 
 
 #[derive(Debug, Deserialize, Clone)]
-pub struct JWT {
-    pub secret: Secret<String>,
+pub struct Jwt {
+    pub secret: SecretString,
     pub expiry: i64,
 }
 
@@ -136,7 +137,7 @@ pub struct JWT {
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct SecretSetting {
-    pub jwt: JWT,
+    pub jwt: Jwt,
 }
 
 

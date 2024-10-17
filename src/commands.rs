@@ -34,17 +34,11 @@ pub async fn run_custom_commands(args: Vec<String>) -> Result<(), anyhow::Error>
     if args.len() > 1 {
         if args[1] == "migrate" {
             run_migrations().await;
+        } else if args[1] == "generate_token" && args.len() > 2 {
+            generate_user_token(&args[2]).await;
         }
-        if args[1] == "generate_token" {
-            if args.len() > 2 {
-                generate_user_token(&args[2]).await;
-            }
-
-        }
-
-
     } else {
-        eprintln!("Invalid command. Use Enter a valid command");
+        eprintln!("Invalid command. Please enter a valid command.");
     }
 
     Ok(())

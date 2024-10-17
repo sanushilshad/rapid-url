@@ -7,9 +7,8 @@ use rand::{distributions::Alphanumeric, Rng};
 use uuid::Uuid;
 
 use crate::{errors::CustomJWTTokenError, schemas::{DatabaseSettings, JWTClaims, Settings}};
-use secrecy::{ExposeSecret, Secret};
+use secrecy::{ExposeSecret, SecretString};
 use sqlx::{Connection, Executor, PgConnection, PgPool};
-use dotenv::dotenv;
 use jsonwebtoken::{
     decode, encode, Algorithm as JWTAlgorithm, DecodingKey, EncodingKey, Header, Validation,
 };
@@ -28,7 +27,7 @@ pub fn generate_short_url() -> String {
 #[tracing::instrument(name = "Decode JWT token")]
 pub fn decode_token<T: Into<String> + std::fmt::Debug>(
     token: T,
-    secret: &Secret<String>,
+    secret: &SecretString,
 ) -> Result<Uuid, CustomJWTTokenError> {
     let decoding_key = DecodingKey::from_secret(secret.expose_secret().as_bytes());
     let decoded = decode::<JWTClaims>(
@@ -101,7 +100,6 @@ pub async fn get_original_url(pool: &PgPool, short_url: &str) -> sqlx::Result<Op
 
 
 pub fn get_configuration() -> Result<Settings, ConfigError> {
-    dotenv().ok();
     let builder = config::Config::builder()
         .add_source(Environment::default().separator("__"))
         .add_source(
@@ -217,8 +215,8 @@ pub async fn configure_database(config: &DatabaseSettings) -> PgPool {
 pub fn generate_jwt_token_for_user(
     user_id: Uuid,
     expiry_time: i64,
-    secret: &Secret<String>,
-) -> Result<Secret<String>, anyhow::Error> {
+    secret: &SecretString,
+) -> Result<SecretString, anyhow::Error> {
     let expiration = Utc::now()
         .checked_add_signed(Duration::hours(expiry_time))
         .expect("valid timestamp")
@@ -230,7 +228,7 @@ pub fn generate_jwt_token_for_user(
     let header = Header::new(JWTAlgorithm::HS256);
     let encoding_key = EncodingKey::from_secret(secret.expose_secret().as_bytes());
     let token: String = encode(&header, &claims, &encoding_key).expect("Failed to generate token");
-    Ok(Secret::new(token))
+    Ok(SecretString::new(token.into()))
 }
 
 
@@ -240,7 +238,7 @@ pub async fn get_user_id(pool: &PgPool, username: &str) ->  Result<Option<Uuid>,
         username
     )
     .fetch_optional(pool)
-    .await.map_err(|e| e)?;
+    .await?;
     Ok(result)
 }
 

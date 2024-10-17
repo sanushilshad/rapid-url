@@ -55,6 +55,8 @@ async fn run(
 ) -> Result<Server, anyhow::Error> {
     let db_pool = web::Data::new(db_pool);
     let secret_obj = web::Data::new(configuration.secret);
+    let workers = configuration.application.workers;
+    let application_obj = web::Data::new(configuration.application);
     // let _secret_key = Key::from(hmac_secret.expose_secret().as_bytes())
     let server = HttpServer::new(move || {
         App::new()
@@ -62,9 +64,10 @@ async fn run(
             .wrap(TracingLogger::default())
             .app_data(db_pool.clone())
             .app_data(secret_obj.clone())
+            .app_data(application_obj.clone())
             .configure(routes)
     })
-    .workers(configuration.application.workers)
+    .workers(workers)
     .listen(listener)?
     .run();
 
