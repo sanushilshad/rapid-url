@@ -5,8 +5,7 @@ use tracing_subscriber::fmt::MakeWriter;
 use tracing_subscriber::{
     filter::LevelFilter, fmt, layer::SubscriberExt, EnvFilter, Layer, Registry,
 };
-// use opentelemetry::trace::TracerProvider as _;
-// use opentelemetry_stdout as stdout;
+use opentelemetry::trace::TracerProvider as _;
 pub fn get_subscriber<Sink>(
     _name: String,
     env_filter: String,
@@ -29,6 +28,8 @@ pub fn init_subscriber(subscriber: impl Subscriber + Send + Sync) {
     set_global_default(subscriber).expect("Failed to set subscriber");
 }
 
+
+
 pub fn get_subscriber_with_jeager<Sink>(
     _name: String,
     env_filter: String,
@@ -37,14 +38,15 @@ pub fn get_subscriber_with_jeager<Sink>(
 where
     Sink: for<'a> MakeWriter<'a> + Send + Sync + 'static,
 {
-    let tracer = opentelemetry_otlp::new_pipeline()
+    let tracer: opentelemetry_sdk::trace::Tracer = opentelemetry_otlp::new_pipeline()
         .tracing()
         .with_exporter(opentelemetry_otlp::new_exporter().tonic())
-        .install_batch(opentelemetry::runtime::Tokio)
-        .expect("Couldn't create OTLP tracer");
+        .install_batch(opentelemetry_sdk::runtime::Tokio)
+    
+        .expect("Couldn't create OTLP tracer").tracer("rapid-url");
     let telemetry_layer: tracing_opentelemetry::OpenTelemetryLayer<
         Registry,
-        opentelemetry::sdk::trace::Tracer,
+        opentelemetry_sdk::trace::Tracer,
     > = tracing_opentelemetry::layer().with_tracer(tracer);
     let env_filter =
         EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(env_filter));
