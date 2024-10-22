@@ -31,7 +31,7 @@ pub fn init_subscriber(subscriber: impl Subscriber + Send + Sync) {
 
 
 pub fn get_subscriber_with_jeager<Sink>(
-    _name: String,
+    name: String,
     env_filter: String,
     sink: Sink,
 ) -> impl Subscriber + Send + Sync
@@ -43,7 +43,7 @@ where
         .with_exporter(opentelemetry_otlp::new_exporter().tonic())
         .install_batch(opentelemetry_sdk::runtime::Tokio)
     
-        .expect("Couldn't create OTLP tracer").tracer("rapid-url");
+        .expect("Couldn't create OTLP tracer").tracer(name);
     let telemetry_layer: tracing_opentelemetry::OpenTelemetryLayer<
         Registry,
         opentelemetry_sdk::trace::Tracer,
