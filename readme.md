@@ -14,7 +14,7 @@ Short URL generation Service
 ## CUSTOM COMMAND FOR DEBUG:
 ### FOR MIGRATION:
 ```
-cargo run --bin ondc-retail-b2b-buyer -- migrate
+cargo run --bin rapid-url -- migrate
 ```
 
 ### FOR TOKEN GENERATION:
@@ -25,11 +25,11 @@ cargo run --bin rapid-url -- generate_token  sanushilshad
 ## CUSTOM COMMAND FOR RELEASE:
 ### FOR MIGRATION:
 
-    cargo run --release --bin  ondc-retail-b2b-buyer -- migrate
+    cargo run --release --bin  rapid-url -- migrate
 
     OR 
 
-    ./target/release/ondc-retail-b2b-buyer migrate
+    ./target/release/rapid-url migrate
 
 ### FOR TOKEN GENERATION:
 ```
